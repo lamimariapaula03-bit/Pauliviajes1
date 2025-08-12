@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAULIVIAJES - Creador Inteligente de Paquetes de Viaje</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7fafc;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+        }
+        .package-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .search-tab.active {
+            border-bottom: 3px solid #3b82f6;
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="hero-gradient text-white">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold">PAULIVIAJES</h1>
+                </div>
+                <nav class="hidden md:block">
+                    <ul class="flex space-x-6">
+                        <li><a href="#" class="hover:text-blue-200">Inicio</a></li>
+                        <li><a href="#" class="hover:text-blue-200">Cómo funciona</a></li>
+                        <li><a href="#" class="hover:text-blue-200">Destinos</a></li>
+                        <li><a href="#" class="hover:text-blue-200">Contacto</a></li>
+                    </ul>
+                </nav>
+                <button class="md:hidden">☰</button>
+            </div>
+            
+            <div class="mt-12 mb-16 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Encuentra tu paquete de viaje perfecto</h2>
+                <p class="text-xl text-blue-100 max-w-2xl mx-auto">Te ayudamos a comparar y crear el paquete de viaje ideal con las mejores opciones de precio y financiación</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Section -->
+    <div class="container mx-auto px-4 -mt-10 mb-16">
+        <div class="bg-white rounded-xl shadow-lg p-6 max-w-6xl mx-auto">
+            <div class="flex mb-6 border-b">
+                <button class="search-tab active px-4 py-2 font-medium">Paquetes</button>
+                <button class="search-tab px-4 py-2 font-medium text-gray-500">Vuelos</button>
+                <button class="search-tab px-4 py-2 font-medium text-gray-500">Hoteles</button>
+                <button class="search-tab px-4 py-2 font-medium text-gray-500">Autos</button>
+            </div>
+            
+            <form id="searchForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Origen</label>
+                    <input type="text" id="origin" placeholder="Ciudad o aeropuerto de salida" 
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Destino</label>
+                    <input type="text" id="destination" placeholder="Ciudad o aeropuerto de llegada" 
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+                    <input type="date" id="date" 
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Duración</label>
+                    <select id="duration" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Seleccione</option>
+                        <option value="3-5">3-5 días</option>
+                        <option value="6-8">6-8 días</option>
+                        <option value="9-14">9-14 días</option>
+                        <option value="15+">15+ días</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300">
+                        Buscar
+                    </button>
+                </div>
+            </form>
+
+            <!-- Advanced Filters (hidden by default) -->
+            <div class="mt-6 hidden" id="advancedFilters">
+                <h3 class="font-medium mb-4">Filtros avanzados</h3>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Precio máximo</label>
+                        <input type="range" min="500" max="10000" step="500" value="5000" 
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                        <span id="priceValue" class="text-sm text-gray-600">$5000</span>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de alojamiento</label>
+                        <select class="w-full p-2 border border-gray-300 rounded-lg">
+                            <option value="">Todos</option>
+                            <option value="hotel">Hotel</option>
+                            <option value="hostel">Hostel</option>
+                            <option value="apartment">Apartamento</option>
+                            <option value="resort">Resort</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Actividades</label>
+                        <select class="w-full p-2 border border-gray-300 rounded-lg">
+                            <option value="">Todas</option>
+                            <option value="beach">Playa</option>
+                            <option value="mountain">Montaña</option>
+                            <option value="city">Ciudad</option>
+                            <option value="adventure">Aventura</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Financiación</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="checkbox" id="installments" class="h-4 w-4 text-blue-600">
+                            <label for="installments">Cuotas sin interés</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button id="toggleFilters" class="mt-4 text-blue-600 text-sm font-medium">Mostrar filtros avanzados ▼</button>
+        </div>
+    </div>
+
+    <!-- AI Recommendation Section -->
+    <section class="container mx-auto px-4 mb-16">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-bold">Recomendaciones Inteligentes</h2>
+            <div class="flex items-center space-x-2">
+                <span class="text-sm text-gray-500">Ordenar por:</span>
+                <select class="border border-gray-300 rounded-lg p-2 text-sm">
+                    <option>Mejor relación calidad-precio</option>
+                    <option>Precio más bajo</option>
+                    <option>Puntuación más alta</option>
+                    <option>Duración más corta</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Package Card 1 -->
+            <div class="package-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                <div class="relative">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ca1ad258-342c-4ab0-8837-aeec93c88f8b.png" alt="Vista panorámica de playa tropical con palmeras y aguas cristalinas en Cancún" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 left-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">RECOMENDADO</div>
+                    <div class="absolute top-2 right-2 bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded flex items-center">
+                        <span>4.8</span>
+                        <span class="ml-1">★</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Cancún Todo Incluido</h3>
+                    <p class="text-gray-600 text-sm mb-4">5 días / 4 noches - Vuelo + Hotel 5 estrellas</p>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <span class="text-gray-400 line-through text-sm">$2,499</span>
+                            <p class="text-2xl font-bold text-blue-600">$1,799</p>
+                        </div>
+                        <div class="text-sm">
+                            <p class="text-green-600 font-medium">36 cuotas de $50</p>
+                            <p class="text-gray-500">Sin interés</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between text-sm mb-4">
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Desayuno incluido</span>
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Transporte aeropuerto</span>
+                    </div>
+                    
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300">
+                        Ver detalles
+                    </button>
+                </div>
+            </div>
+
+            <!-- Package Card 2 -->
+            <div class="package-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                <div class="relative">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/220ebfd9-8446-4d9e-a1c2-e21edcd19978.png" alt="Vista aérea de París con la Torre Eiffel iluminada al atardecer" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 right-2 bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded flex items-center">
+                        <span>4.6</span>
+                        <span class="ml-1">★</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Romántica París</h3>
+                    <p class="text-gray-600 text-sm mb-4">7 días / 6 noches - Vuelo + Hotel 4 estrellas</p>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <span class="text-gray-400 line-through text-sm">$3,200</span>
+                            <p class="text-2xl font-bold text-blue-600">$2,650</p>
+                        </div>
+                        <div class="text-sm">
+                            <p class="text-green-600 font-medium">24 cuotas de $110</p>
+                            <p class="text-gray-500">Sin interés</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between text-sm mb-4">
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Desayuno buffet</span>
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Tour gratis</span>
+                    </div>
+                    
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300">
+                        Ver detalles
+                    </button>
+                </div>
+            </div>
+
+            <!-- Package Card 3 -->
+            <div class="package-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300">
+                <div class="relative">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/bcfb6546-1f6e-4d20-accf-d056ef2d5435.png" alt="Paisaje montañoso con nieve en Bariloche, Argentina, con lago y montañas de fondo" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 left-2 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">OFERTA</div>
+                    <div class="absolute top-2 right-2 bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded flex items-center">
+                        <span>4.7</span>
+                        <span class="ml-1">★</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">Aventura en Bariloche</h3>
+                    <p class="text-gray-600 text-sm mb-4">6 días / 5 noches - Vuelo + Cabaña</p>
+                    
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <span class="text-gray-400 line-through text-sm">$1,800</span>
+                            <p class="text-2xl font-bold text-blue-600">$1,299</p>
+                        </div>
+                        <div class="text-sm">
+                            <p class="text-green-600 font-medium">18 cuotas de $72</p>
+                            <p class="text-gray-500">Sin interés</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between text-sm mb-4">
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Paseos incluidos</span>
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">Desayuno</span>
+                    </div>
+                    
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition duration-300">
+                        Ver detalles
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Price Comparison Section -->
+    <section class="bg-gray-50 py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-2xl font-bold text-center mb-12">Comparación de Proveedores</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-3 px-4 text-left">Proveedor</th>
+                            <th class="py-3 px-4 text-left">Precio</th>
+                            <th class="py-3 px-4 text-left">Financiación</th>
+                            <th class="py-3 px-4 text-left">Incluye</th>
+                            <th class="py-3 px-4 text-left">Valoración</th>
+                            <th class="py-3 px-4"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <!-- Despegar -->
+                        <tr>
+                            <td class="py-4 px-4 flex items-center">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/05ac523f-011c-4bdc-94cb-24e466a015d5.png" alt="Logo de Despegar con fondo naranja y letras blancas" class="h-6 mr-3">
+                                Despegar
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-lg font-bold text-blue-600">$1,799</p>
+                                <p class="text-sm text-gray-500 line-through">$2,499</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-green-600">36 cuotas de $50</p>
+                                <p class="text-xs text-gray-500">Sin interés</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm">Vuelo + Hotel + Traslados</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center">
+                                    <span class="text-yellow-500">★★★★★</span>
+                                    <span class="ml-1 text-sm text-gray-500">4.8</span>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4">
+                                <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">Ver oferta</button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Booking -->
+                        <tr>
+                            <td class="py-4 px-4 flex items-center">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/54448acf-3ed7-426c-ae07-83e0202861d3.png" alt="Logo de Booking.com con fondo azul y letras blancas" class="h-6 mr-3">
+                                Booking
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-lg font-bold text-blue-600">$1,850</p>
+                                <p class="text-sm text-gray-500 line-through">$2,300</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-green-600">24 cuotas de $77</p>
+                                <p class="text-xs text-gray-500">Sin interés</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm">Vuelo + Hotel</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center">
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="ml-1 text-sm text-gray-500">4.5</span>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4">
+                                <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">Ver oferta</button>
+                            </td>
+                        </tr>
+                        
+                        <!-- Expedia -->
+                        <tr>
+                            <td class="py-4 px-4 flex items-center">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8014aa56-165a-4dd8-85db-2487baa93674.png" alt="Logo de Expedia con fondo azul oscuro y letras blancas" class="h-6 mr-3">
+                                Expedia
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-lg font-bold text-blue-600">$1,920</p>
+                                <p class="text-sm text-gray-500">Sin descuento</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-gray-600">12 cuotas de $160</p>
+                                <p class="text-xs text-gray-500">Con interés</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm">Vuelo + Hotel + Seguro</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center">
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="ml-1 text-sm text-gray-500">4.3</span>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4">
+                                <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">Ver oferta</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Explanation Section -->
+    <section class="container mx-auto px-4 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-2xl font-bold">Cómo funciona nuestro creador inteligente</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto mt-4">Nuestra IA analiza miles de opciones para ofrecerte los mejores paquetes con la mejor relación calidad-precio</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-blue-600 text-2xl">1</span>
+                </div>
+                <h3 class="font-bold mb-2">Ingresa tus preferencias</h3>
+                <p class="text-gray-600 text-sm">Destino, fechas, presupuesto y tipo de viaje que deseas</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-blue-600 text-2xl">2</span>
+                </div>
+                <h3 class="font-bold mb-2">Analizamos miles de opciones</h3>
+                <p class="text-gray-600 text-sm">Buscamos en todas las plataformas para comparar precios</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-blue-600 text-2xl">3</span>
+                </div>
+                <h3 class="font-bold mb-2">Optimizamos tu paquete</h3>
+                <p class="text-gray-600 text-sm">Combinamos vuelos, hoteles y actividades al mejor precio</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-blue-600 text-2xl">4</span>
+                </div>
+                <h3 class="font-bold mb-2">Te mostramos las mejores opciones</h3>
+                <p class="text-gray-600 text-sm">Con financiación y descuentos exclusivos</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Price Alert Section -->
+    <section class="bg-blue-600 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold mb-4">¿No encontraste lo que buscabas?</h2>
+            <p class="max-w-2xl mx-auto mb-6">Regístrate para recibir alertas cuando bajen los precios de tus destinos favoritos o aparezcan mejores promociones</p>
+            
+            <div class="max-w-md mx-auto flex">
+                <input type="email" placeholder="Tu email" class="flex-grow p-3 rounded-l-lg focus:outline-none text-gray-800">
+                <button class="bg-blue-800 hover:bg-blue-900 px-6 py-3 rounded-r-lg font-medium">Registrarme</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-12 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">TravelGenius</h3>
+                    <p class="text-gray-400">El creador inteligente de paquetes de viaje que te ahorra tiempo y dinero.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Destinos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Caribe</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Europa</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Norteamérica</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Sudamérica</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Compañías</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Despegar</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Booking</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Expedia</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Kayak</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Contacto</h4>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400">contacto@pauliviajes.com</li>
+                        <li class="text-gray-400">+54 11 1234-5678</li>
+                        <li class="flex space-x-4 mt-4">
+                            <a href="#" class="hover:text-blue-400">FB</a>
+                            <a href="#" class="hover:text-blue-400">IG</a>
+                            <a href="#" class="hover:text-blue-400">TW</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
+                <p>© 2023 PAULIVIAJES. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle advanced filters
+        document.getElementById('toggleFilters').addEventListener('click', function() {
+            const filters = document.getElementById('advancedFilters');
+            if (filters.classList.contains('hidden')) {
+                filters.classList.remove('hidden');
+                this.textContent = 'Ocultar filtros avanzados ▲';
+            } else {
+                filters.classList.add('hidden');
+                this.textContent = 'Mostrar filtros avanzados ▼';
+            }
+        });
+
+        // Update price range value
+        const priceRange = document.querySelector('input[type="range"]');
+        const priceValue = document.getElementById('priceValue');
+        if (priceRange) {
+            priceRange.addEventListener('input', function() {
+                priceValue.textContent = '$' + this.value;
+            });
+        }
+
+        // Tab switching
+        const tabs = document.querySelectorAll('.search-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabs.forEach(t => t.classList.remove('active'));
+                tabs.forEach(t => t.classList.add('text-gray-500'));
+                this.classList.add('active');
+                this.classList.remove('text-gray-500');
+            });
+        });
+
+        // Form submission
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would normally make an API call
+            alert('Búsqueda realizada! En una implementación real, esto enviaría los datos al servidor y mostraría resultados reales.');
+        });
+
+        // Simulate API loading
+        function simulateAPILoading() {
+            // This would be replaced with actual API calls to travel providers
+            console.log('Simulating API calls to travel providers...');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', simulateAPILoading);
+    </script>
+</body>
+</html>
+
